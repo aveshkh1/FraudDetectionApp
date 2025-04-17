@@ -1,4 +1,4 @@
-# FraudDetectionAp# Fraud Detection Web Application
+# Fraud Detection Web Application
 
 ## Description
 This is a web application for detecting fraudulent transactions using machine learning. The model is based on CatBoost, a gradient boosting algorithm, and aims to identify suspicious or fraudulent transactions from a given dataset.
