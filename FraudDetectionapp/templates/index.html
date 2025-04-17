@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fraud Detection System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 40px;
+            color: #333;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 600px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1e8449;
+        }
+
+        .result, .notification {
+            margin-top: 30px;
+            padding: 15px;
+            background: #ecf0f1;
+            border-left: 5px solid #3498db;
+            border-radius: 5px;
+        }
+
+        .fraud-alert {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Fraud Detection Form</h2>
+
+    <form action="/predict" method="POST">
+        <label for="step">Transaction Hour (1 - 744):</label>
+        <input type="number" id="step" name="step" required>
+
+        <label for="type">Transaction Type:</label>
+        <select id="type" name="type">
+            <option value="CASH_OUT">Cash Out</option>
+            <option value="PAYMENT">Payment</option>
+            <option value="CASH_IN">Cash In</option>
+            <option value="TRANSFER">Transfer</option>
+            <option value="DEBIT">Debit</option>
+        </select>
+
+        <label for="amount">Transaction Amount:</label>
+        <input type="text" id="amount" name="amount" required>
+
+        <label for="oldbalanceOrg">Sender's Initial Balance:</label>
+        <input type="text" id="oldbalanceOrg" name="oldbalanceOrg" required>
+
+        <label for="newbalanceOrig">Sender's Balance After Transaction:</label>
+        <input type="text" id="newbalanceOrig" name="newbalanceOrig" required>
+
+        <label for="oldbalanceDest">Receiver's Initial Balance:</label>
+        <input type="text" id="oldbalanceDest" name="oldbalanceDest" required>
+
+        <label for="newbalanceDest">Receiver's Balance After Transaction:</label>
+        <input type="text" id="newbalanceDest" name="newbalanceDest" required>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+    <div class="result">
+        <strong>Prediction:</strong> {{ prediction }}
+
+        {% if prediction == 'Fraudulent' %}
+        <div class="fraud-alert">
+            ⚠️ This appears to be a fraudulent transaction. Please contact your bank immediately to secure your account.
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if sms_status %}
+    <div class="notification">
+        <strong>Notification:</strong> {{ sms_status }}
+    </div>
+    {% endif %}
+</body>
+</html>
